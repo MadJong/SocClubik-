@@ -62,3 +62,13 @@ export const authme = (email, password,rememberMe) => {
 export const logOut = () => {
     return instanceOfAxios.delete(`auth/login`)
 }
+
+export const setUserPhoto = (photoFile) => {
+    const formData = new FormData();
+    formData.append("image",photoFile)
+    return instanceOfAxios.put(`profile/photo`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    } )
+}

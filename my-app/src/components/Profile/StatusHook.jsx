@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-
+import classes from "./Profile.module.css"
 
 const StatusHook = (props) => {
     let [editMode, setEdidtMode] = useState(false)
@@ -13,6 +13,7 @@ const StatusHook = (props) => {
     }
     return (
         <div>
+            <div className={classes.bold}><span>Status: </span></div>
         {editMode ? 
         <div>
         <input onChange={e => {

@@ -1,9 +1,11 @@
-import { getUserStatus, updateStatus } from "../Api/api"
+import { getUserStatus, setUserPhoto, updateStatus } from "../Api/api"
 
 const Add_Post = "ADD-POST"
 const Area_Post_Change = "AREA-POSTS-CHANGE"
 const SETUSERPROFILE = "SETUSERPROFILE"
 const SETSTATUS = "SETSTATUS"
+const INI = "INI"
+const UPDATEPHOTO = "UPDATEPHOTO"
 
 let ober = {
     posts: [{nickName: "Да я настоящий", ms: "y/blob/master/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid"},
@@ -13,7 +15,8 @@ let ober = {
 ],
     postsArea: "",
     userProfile: null,
-    status: ""
+    status: "",
+    myID: null,
   }
 
 
@@ -36,11 +39,26 @@ const ProfileReduser = (state = ober, action) => {
                 stateCop={...state, userProfile: action.userProfile}
                 return stateCop;
                 case SETSTATUS:
-                   return stateCop={...state, status: action.status}
+                   return stateCop={...state, status: action.status};
+                   case INI:
+                       return stateCop= {...state, myID: action.id};
+                    case UPDATEPHOTO:
+                        return stateCop={...state, userProfile: {...state.userProfile, photos: action.photos}}
                 default:
                     return state;
 } }
-
+export const inicial = (id) => {
+    return {
+        type: INI,
+        id,
+    }
+}
+export const setPhoto = (photos) => {
+    return {
+        type: UPDATEPHOTO,
+        photos,
+    }
+}
 export const addPostActionCreator = (text) => {
     return {
         type: Add_Post,
@@ -79,5 +97,12 @@ export const updateUserStatus = (status) => async(dispatch) => {
             dispatch(setStatus(status))
         } 
     
+}
+
+export const savePhoto = (file) => async(dispatch) => {
+    let response = await setUserPhoto(file)
+    if(response.data.resultCode === 0) {
+        dispatch(setPhoto(response.data.data.photos))  
+    }
 }
 export default ProfileReduser

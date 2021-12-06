@@ -8,7 +8,7 @@ import { doAuthorization } from "../../Redux/findusers-reducer";
 class HeaderContainer extends React.Component {
     
     componentDidMount() {
-        this.props.doAuthorization()
+        //this.props.doAuthorization()
   }
     
     render() {

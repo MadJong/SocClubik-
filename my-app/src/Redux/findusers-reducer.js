@@ -1,6 +1,7 @@
+import { initialize } from "redux-form"
 import { doFollow, doUnfollow, getAuth, getUserPage, getUsers, getUserStatus } from "../Api/api"
 import { setUserData } from "./auth-reducer"
-import { getStatus, setStatus, setUserProfile } from "./pfrofile-reduser"
+import { getStatus, inicial, setStatus, setUserProfile } from "./pfrofile-reduser"
 const SETUSERS = "SETUSERS"
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
@@ -105,9 +106,7 @@ export const getUsersThunkCreator = (cp ,pageSize) => async (dispatch) => {
     dispatch(setIsFetching(true))
     let response = await getUsers(cp, pageSize);
         dispatch(setUsers(response.items))
-        if (response.totalCount > 10) {
-            dispatch(setUserTotalCount(response.totalCount))
-        }
+        dispatch(setUserTotalCount(response.totalCount))
         dispatch(setIsFetching(false))
         //this.props.setUsersTotalCount(response.data.totalCount)
     
@@ -145,11 +144,11 @@ export const doAuthorization = () => async(dispatch) => {
         if (response.resultCode === 0) {
             let {id, login, email} = response.data
             dispatch(setUserData(id, email, login, true))
+            dispatch(inicial(id)) 
             let responseT = await getUserPage(id)
             dispatch(setUserProfile(responseT))
             let responseThree = await getUserStatus(id)
             dispatch(setStatus(responseThree.data))
-
         }
     
 }

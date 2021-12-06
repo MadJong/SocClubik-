@@ -9,17 +9,23 @@ const ProfileInfo = (props)=> {
   if (!props.profile) {
     return <Preloader />
   } 
+  const changeAva = (e) => {
+    if (e.target.files.length) {
+      props.savePhoto(e.target.files[0])
+    }
+  }
   return (
         <div>
             <div>
           <img style={{width: '100%', height: '400px'}} src="https://i.ytimg.com/vi/nwQxU4gFTHY/maxresdefault.jpg" />
         </div>
         <div className={classes.ava}>
-          <img src={props.profile.photos.large ? props.profile.photos.large : "" } alt="" />
+          <img className={classes.img} src={props.profile.photos.large || "https://www.kino-teatr.ru/news/8434/85299.jpg" } alt="" />
+          <div>{props.myID ? <input type={"file"} onChange={changeAva} />: null}</div>
           <div>
             
-            <div>{props.profile.fullName}</div>
-            <div>В поиске работы - {props.profile.lookingForAJob ? "Да" : "нет" } </div>
+            <div><span className={classes.bold}>{props.profile.fullName}</span></div>
+            <div> <span className={classes.bold}>В поиске работы: </span>{props.profile.lookingForAJob ? "Да" : "Нет" } </div>
             <StatusHook status={props.status} updateUserStatus={props.updateUserStatus}/>
           </div>
         </div>
