@@ -1,0 +1,23 @@
+.header {
+    grid-area: h;
+    background-color: #bb4242;
+  }
+  
+  
+  .img {
+    margin-top: 5px;
+    margin-left: 37px
+  }
+
+  .loginBlock {
+    float: right;
+  }
+
+  .loginBlock a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .loginBlock a:hover {
+    color: black;
+  }

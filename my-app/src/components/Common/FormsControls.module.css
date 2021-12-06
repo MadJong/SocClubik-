@@ -1,0 +1,24 @@
+.formControl {
+    text-decoration: none;
+}
+
+.formControl.error input,
+.formControl.error textarea {
+border: 2px solid rgb(255, 17, 0);
+}
+.formControl.error span {
+    color: rgb(255, 0, 0)
+}
+
+.textArea {
+    width: 90%;
+    height: 50px;
+}
+.area {
+    width: 100%;
+    margin-left: 1%;
+}
+
+.errorSpan {
+    margin-left: 37%;
+}

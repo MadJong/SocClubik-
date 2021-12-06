@@ -1,0 +1,54 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.dialogsItems {
+    padding: 10px;
+}
+
+.dialogsItem {
+ text-decoration: none;
+ color: black;
+}
+
+.dialogsMessages {
+    padding: 10px;
+}
+
+.dialogsMessage {
+    background-color: white;
+}
+
+.active {
+    text-decoration: none;
+    color: #bb4242;
+    font-weight: bold;
+}
+
+.createForm {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textArea {
+    width: 90%;
+    height: 50px;
+}
+.send {
+    padding: 10px 30px;
+    cursor: pointer;
+    color: white;
+    background-color: #bb4242;
+}
+
+.button {
+    margin-left: 50%;
+    margin-top: 15px;
+}
+
+.send:hover {
+    color: black;
+}

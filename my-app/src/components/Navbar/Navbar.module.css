@@ -1,0 +1,23 @@
+.nav {
+    grid-area: n;
+    background-color: #bb4242;
+    color: white;
+  }
+
+  .item {
+    margin: 15px 0 10px -20px;
+    text-align: center  ;
+  }
+
+  .ss {
+    color: white;
+    text-decoration: none;
+  }
+  .ss:hover {
+    color: black;
+    cursor: pointer;
+  }
+
+  .ac {
+    color: black
+  }

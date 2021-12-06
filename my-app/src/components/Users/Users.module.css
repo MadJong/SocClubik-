@@ -1,0 +1,22 @@
+.img {
+    width: 100px;
+    height: 100px;
+   
+}
+
+.pageContainer {
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+.page {
+    color: black;
+    margin: 0 10px;
+    cursor: pointer;
+}
+.pageSelected {
+    font-weight: bold;
+    color: #bb4242 ;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0 10px;
+}

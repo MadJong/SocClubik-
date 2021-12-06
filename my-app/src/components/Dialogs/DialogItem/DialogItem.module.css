@@ -1,0 +1,10 @@
+.dialogsItem {
+    text-decoration: none;
+    color: black;
+   }
+
+   .active {
+    text-decoration: none;
+    color: #bb4242;
+    font-weight: bold;
+}
