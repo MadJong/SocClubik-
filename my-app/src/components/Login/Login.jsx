@@ -8,20 +8,21 @@ const Login = (props) => {
     const log = useNavigate()
     let onSubmit = (formData) => {
         console.log(formData.email, formData.password, formData.rememberMe)
-        props.login(formData.email, formData.password, formData.rememberMe)
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
 
     if (props.isAuth) {log("/profile/")}
     return (   
             <div><h1>Login</h1>
-            <LoginRedusxForm onSubmit={onSubmit}/></div>
+            <LoginRedusxForm captchaUrl={props.captchaUrl} onSubmit={onSubmit}/></div>
             
     )
 }
 
 const mapStateToProps = (state) => {
   return  {
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    captchaUrl: state.auth.captchaUrl
     }
 }
 export default connect(mapStateToProps, {login, antiLogin})(Login)

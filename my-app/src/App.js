@@ -12,6 +12,7 @@ import {Navigate} from "react-router-dom";
 import Login from "./components/Login/Login"
 import React, { useEffect } from 'react';
 import { doAuthorization } from './Redux/findusers-reducer';
+import Void from './components/Void/Void';
 
 function App() {
   console.log(store.getState().auth.isAuth)
@@ -29,6 +30,9 @@ function App() {
       <Route path="/findusers" element={<UsersContainer />}></Route>
       <Route path="/profile/:userId" element={<UserPage/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/music" element={<Void/>}/>
+      <Route path="/news" element={<Void/>}/>
+      <Route path="/settings" element={<Void/>}/>
       <Route path="/*" element={<Navigate to="/login"/>} />
       </Routes>
     </div>

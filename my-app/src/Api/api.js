@@ -55,8 +55,8 @@ export const updateStatus = (status) => {
     })
 }
 
-export const authme = (email, password,rememberMe) => {
-    return instanceOfAxios.post(`/auth/login`, {email, password, rememberMe})
+export const authme = (email, password,rememberMe, captcha = null) => {
+    return instanceOfAxios.post(`/auth/login`, {email, password, rememberMe, captcha})
 }
 
 export const logOut = () => {
@@ -71,4 +71,8 @@ export const setUserPhoto = (photoFile) => {
             'Content-Type': 'multipart/form-data'
         }
     } )
+}
+
+export const getCaptchaUrl = () => {
+    return instanceOfAxios.get(`/security/get-captcha-url`)
 }

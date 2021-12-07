@@ -18,6 +18,7 @@
     cursor: pointer;
   }
 
-  .ac {
-    color: black
+ .item a.active {
+    color: black;
+    text-decoration: none;
   }
