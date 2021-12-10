@@ -18,6 +18,7 @@ function App() {
   console.log(store.getState().auth.isAuth)
   useEffect(() => {
     doAuthorization()
+    console.log(11)
   }, [])
   return (
     <div className="app-wrapper">
@@ -27,7 +28,7 @@ function App() {
     <Routes>
       <Route path="/messages/*" element={<React.Suspense fallback={<div>Loading</div>}> <DialogsContainer /> </React.Suspense>} />
       <Route path="/profile/" element={<ProfileContainer />} />
-      <Route path="/findusers" element={<UsersContainer />}></Route>
+      <Route path="/findusers" element={<UsersContainer pageTitle={"Айтишники"} />}></Route>
       <Route path="/profile/:userId" element={<UserPage/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/music" element={<Void/>}/>

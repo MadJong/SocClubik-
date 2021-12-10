@@ -1,13 +1,26 @@
 import React from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { UserType } from "../../Types/Types";
 import Paginator from "./Paginator";
 import classes from "./Users.module.css"
-const UsersPure = (props) => {
+type PropsType = {
+    totalUsersCount: number
+    pageSize: number
+    currentPage: number
+    pageChenged: (p: number) => void 
+    users: Array<UserType>
+    isFollowingProgress: Array<number>
+    uUnFollow: (id: number) => void
+    uFollow: (id: number) => void
+    isFetching: boolean
+    title: string
+}
+const UsersPure: React.FC<PropsType> = ({totalUsersCount, pageSize, currentPage,pageChenged, users, isFollowingProgress, uUnFollow, uFollow, title}) => {
     const route = useNavigate()
     return (
         <div>
-                <Paginator totalUsersCount={props.totalUsersCount} pageSize={props.pageSize} currentPage={props.currentPage}  pageChenged={props.pageChenged} />
-            {props.users.map(us => {
+                <Paginator totalUsersCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage}  pageChenged={pageChenged} />
+            {users.map(us => {
                 return (<div key={us.id}>
                     <span>
                         <div>
@@ -18,10 +31,10 @@ const UsersPure = (props) => {
                         
                         </div>
                         <div>
-                            {us.followed ? <button disabled={props.isFollowingProgress.some(id => id === us.id)} onClick={() => {
-                               props.useUnFollow(us.id)
-                            }}>Unfollow</button> : <button disabled={props.isFollowingProgress.some(id => id === us.id)} onClick={() => {
-                                props.useFollow(us.id)
+                            {us.followed ? <button disabled={isFollowingProgress.some(id => id === us.id)} onClick={() => {
+                               uUnFollow(us.id)
+                            }}>Unfollow</button> : <button disabled={isFollowingProgress.some(id => id === us.id)} onClick={() => {
+                                uFollow(us.id)
                             }}>Follow</button> }
                         </div>
                     </span>

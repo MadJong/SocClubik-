@@ -1,15 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 import classes from "./Profile.module.css"
 
-const StatusHook = (props) => {
+type PropsType = {
+    status: string | "" 
+    updateUserStatus: (status: string) => void
+}
+const StatusHook: React.FC<PropsType> = ({status, updateUserStatus}) => {
     let [editMode, setEdidtMode] = useState(false)
-    let [status, setStatus] = useState(props.status)
+    let [statusx, setStatus] = useState(status)
    useEffect(() => {
-       setStatus(props.status)
-   }, [props.status])
+       setStatus(status)
+   }, [status])
     const deactivideEditMode = () => {
         setEdidtMode(false)
-        props.updateUserStatus(status)
+        updateUserStatus(statusx)
     }
     return (
         <div>
@@ -18,7 +22,7 @@ const StatusHook = (props) => {
         <div>
         <input onChange={e => {
             setStatus(e.target.value)
-        }} value={status} autoFocus={true} onBlur={
+        }} value={statusx} autoFocus={true} onBlur={
             deactivideEditMode
         } ></input>
         </div>
@@ -26,7 +30,7 @@ const StatusHook = (props) => {
         <div>
         <span onDoubleClick={() => {
             setEdidtMode(true)
-        }}>{props.status}</span>
+        }}>{status}</span>
         </div> }
     </div>
     )

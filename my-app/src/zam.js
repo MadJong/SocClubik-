@@ -232,3 +232,126 @@ getUserPage(this.props.ss).then(response => {
           
           export default App;
           
+          export const login = (email, password, rememberMe) => async(dispatch) => {
+            authme(email, password, rememberMe).then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(doAuthorization())
+                } else {
+                    let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
+                    dispatch(stopSubmit("ReactJs", {_error: message}))
+                }
+            })
+        }
+        
+        export const antiLogin = () => (dispatch) => {
+            logOut().then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(setUserData(null,null,null,false))
+                }
+            })
+        }
+        
+        {
+            //Find users
+            export const getUsersThunkCreator = (cp ,pageSize) =>  (dispatch) => {
+                dispatch(setIsFetching(true))
+                getUsers(cp, pageSize).then(response => {
+                    dispatch(setUsers(response.items))
+                    if (response.totalCount > 10) {
+                        dispatch(setUserTotalCount(50))
+                    }
+                    dispatch(setIsFetching(false))
+                    //this.props.setUsersTotalCount(response.data.totalCount)
+                })
+                  
+            }
+            
+            export const useUnFollow =  (id) => (dispatch) => {
+                dispatch(setStateFollowing(true, id));
+                doUnfollow(id).then(response => {
+                    if (response.data.resultCode == 0) {
+                        dispatch(unfollow(id))
+                    }
+                    dispatch(setStateFollowing(false, id))
+                })
+            }
+            
+            export const useFollow =  (id) => (dispatch) => {
+                dispatch(setStateFollowing(true, id));
+                doFollow(id).then(response => {
+                    if (response.data.resultCode == 0) {
+                        dispatch(follow(id))
+                    }
+                    dispatch(setStateFollowing(false, id))
+                })
+            }
+            
+            export const getUserPageThunk = (id) => (dispatch) => {
+                getUserPage(id).then(response => {
+                    dispatch(setUserProfile(response))
+                })
+            }
+            
+            export const doAuthorization = () => (dispatch) => {
+                getAuth().then(response => {
+                    if (response.resultCode === 0) {
+                        let {id, login, email} = response.data
+                        dispatch(setUserData(id, email, login, true))
+                    }
+                })
+            }
+            
+            export const getUserStatusThunk = (id) => (dispatch) => {
+                getUserStatus(id).then(response => {
+                    return response
+                })
+            }
+        }
+
+        <div className={classes.pageContainer}>
+                    {pages.map(p => {
+                        return (
+                            <span className={props.currentPage === p ? classes.pageSelected : classes.page} onClick={ () => {
+                                props.pageChenged(p)}}>{p}</span>
+                        )
+                    })}
+                </div>
+
+const rr = useRef()
+const colection = document.getElementsByClassName(`${classes.ss}`)
+const [aa, setAa] = useState(colection[0])
+const active = () => {
+  console.log("отработал цикл!")
+  for (let i = 0; i < rr.current.children.length; i++) {
+    if (rr.current.children[i].children[0] === aa) {
+      rr.current.children[i].children[0].classList.add(`${classes.ac}`)
+    } else {rr.current.children[i].children[0].classList.remove(`${classes.ac}`)}
+  }
+}
+useEffect(() => {
+  active()
+}, [aa])
+return (
+    <nav className={classes.nav} ref={rr}>
+    <div className={classes.item}><Link to="/profile" className={classes.ss} onClick={(event) => {
+      setAa(event.target)
+    }}>Profile</Link></div>
+    <div className={classes.item}><Link to="/messages" onClick={ async(event) => {
+      setAa(event.target) 
+    }} className={classes.ss}>Messages</Link></div>
+    <div className={classes.item}><Link to="/news" onClick={ async(event) => {
+      setAa(event.target) 
+    }} className={classes.ss}>News</Link></div>
+    <div className={classes.item}><Link to="Music" onClick={ async(event) => {
+      setAa(event.target) 
+    }} className={classes.ss}>Music</Link></div>
+    <div className={classes.item}><Link to="settings" onClick={ async(event) => {
+      setAa(event.target) 
+    }} className={classes.ss} onClick={(event) => {
+      setAa(event.target)
+    }}>Settings</Link></div>
+    <div className={classes.item}><Link to="/findusers" onClick={ async(event) => {
+      setAa(event.target) 
+    }} className={classes.ss}>Find users</Link></div>
+  </nav>
+)

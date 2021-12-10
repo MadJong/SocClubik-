@@ -1,7 +1,12 @@
-import { initialize } from "redux-form"
+
+import { Dispatch } from "redux"
+import { ThunkAction } from "redux-thunk"
 import { doFollow, doUnfollow, getAuth, getUserPage, getUsers, getUserStatus } from "../Api/api"
-import { setUserData } from "./auth-reducer"
-import { getStatus, inicial, setStatus, setUserProfile } from "./pfrofile-reduser"
+import { UserType } from "../Types/Types"
+import { setUserData, setUserDataType } from "./auth-reducer"
+
+import { getStatus, inicial,  IniType,  setStatus, setStatusType, setUserProfile, setUserProfileType } from "./pfrofile-reduser"
+import { AppStateType } from "./redux-store"
 const SETUSERS = "SETUSERS"
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
@@ -9,17 +14,18 @@ const SELECTPAGE = "SELECTPAGE"
 const SETUSERTOTALCOUNT = "SETUSERTOTALCOUNT"
 const SETISFETCHING = "SETISFETCHING"
 const SETISFOLLOWINGPROGRESS = "SETISFOLLOWINGPROGRESS"
+
 const ober = {
     users: [
-    ],
+    ] as Array<UserType>,
     pageSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    isFollowingProgress: [],
+    isFollowingProgress: [] as Array<number>,
 }
- 
-const UsersReducer = (state = ober, action) => {
+ type UserOber = typeof ober
+const UsersReducer = (state = ober, action: ActionsTypes) : UserOber => {
         let stateCop = {}
         switch (action.type) {
             case FOLLOW:
@@ -55,7 +61,14 @@ const UsersReducer = (state = ober, action) => {
             default: return state
         }
 }
-export const setStateFollowing = (state, id) => {
+
+type ActionsTypes = selectPageType |  SetUsers | followType | unfollowType  | setUsersTotalCountType | setIsFetchingType | setStateFollowingType | setUserProfileType | IniType | setStatusType | setUserDataType
+type setStateFollowingType = {
+    type: typeof SETISFOLLOWINGPROGRESS
+    state: boolean
+    id: number
+}
+export const setStateFollowing = (state: boolean, id:number): setStateFollowingType => {
     return {
         type: SETISFOLLOWINGPROGRESS,
         state,
@@ -63,46 +76,70 @@ export const setStateFollowing = (state, id) => {
 
     }
 }
+type SetUsers = {
+    type: typeof SETUSERS
+    users: Array<UserType>
 
-export const setUsers = (users) => {
+}
+export const setUsers = (users: Array<UserType>): SetUsers => {
     return {
         type: SETUSERS,
         users: users
     }
 }
-export const follow = (userId) => {
+type followType = {
+    type: typeof FOLLOW
+    userId: number
+}
+export const follow = (userId:number): followType => {
     return {
         type: FOLLOW,
-        userId: userId
+        userId: userId,
     }
 }
-export const unfollow = (userId) => {
+type unfollowType = {
+    type: typeof UNFOLLOW
+    userId: number
+}
+export const unfollow = (userId: number): unfollowType => {
     return {
         type: UNFOLLOW,
         userId: userId
     }
 }
-export const selectPage = (num) => {
+export type selectPageType = {
+    type: typeof SELECTPAGE
+    numberPage: number
+}
+export const selectPage = (num: number): selectPageType => {
     return {
         type: SELECTPAGE,
         numberPage: num,
     }
 }
-export const setUserTotalCount = (totalcount) => {
+type setUsersTotalCountType = {
+    type: typeof SETUSERTOTALCOUNT
+    totalcount: number
+}
+export const setUserTotalCount = (totalcount: number): setUsersTotalCountType => {
     return {
         type: SETUSERTOTALCOUNT,
         totalcount: totalcount,
     }
 }
-
-export const setIsFetching = (isFetching, id) => {
+type setIsFetchingType = {
+    type: typeof SETISFETCHING
+    isFetching: boolean
+}
+export const setIsFetching = (isFetching: boolean): setIsFetchingType => {
     return {
         type: SETISFETCHING,
         isFetching: isFetching,
     }
 }
-
-export const getUsersThunkCreator = (cp ,pageSize) => async (dispatch) => {
+type GetStateType = () => AppStateType
+type DispatchType = Dispatch<ActionsTypes>
+export const getUsersThunkCreator = (cp: number ,pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => {
     dispatch(setIsFetching(true))
     let response = await getUsers(cp, pageSize);
         dispatch(setUsers(response.items))
@@ -112,8 +149,8 @@ export const getUsersThunkCreator = (cp ,pageSize) => async (dispatch) => {
     
       
 }
-
-export const useUnFollow =  (id) => async(dispatch) => {
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+export const useUnFollow =  (id:number):ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async(dispatch) => {
     dispatch(setStateFollowing(true, id));
     let response = await doUnfollow(id)
         if (response.data.resultCode == 0) {
@@ -123,23 +160,22 @@ export const useUnFollow =  (id) => async(dispatch) => {
     
 }
 
-export const useFollow =  (id) => async(dispatch) => {
+export const useFollow =  (id: number): ThunkType => async(dispatch) => {
     dispatch(setStateFollowing(true, id));
    let response = await doFollow(id)
         if (response.data.resultCode == 0) {
             dispatch(follow(id))
         }
         dispatch(setStateFollowing(false, id))
-   
 }
 
-export const getUserPageThunk = (id) => async(dispatch) => {
+export const getUserPageThunk = (id: number): ThunkType => async(dispatch) => {
    let response = await getUserPage(id)
         dispatch(setUserProfile(response))
     
 }
 
-export const doAuthorization = () => async(dispatch) => {
+export const doAuthorization = (): ThunkType => async(dispatch) => {
    let response = await getAuth()
         if (response.resultCode === 0) {
             let {id, login, email} = response.data
@@ -153,7 +189,7 @@ export const doAuthorization = () => async(dispatch) => {
     
 }
 
-export const getUserStatusThunk = (id) => async(dispatch) => {
+export const getUserStatusThunk = (id: number): ThunkType => async(dispatch) => {
    let response = await getUserStatus(id)
         return response
     

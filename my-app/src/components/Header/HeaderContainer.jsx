@@ -1,8 +1,10 @@
 import React from "react";
 import Head from "./Head";
-import { antiLogin, setUserData } from "../../Redux/auth-reducer";
+
 import {connect} from "react-redux"
 import { doAuthorization } from "../../Redux/findusers-reducer";
+import { antiLogin, setUserData } from "../../Redux/auth-reducer";
+
 
 
 class HeaderContainer extends React.Component {
@@ -17,7 +19,6 @@ class HeaderContainer extends React.Component {
         )
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         isAuth: state.auth.isAuth,

@@ -1,27 +1,48 @@
-import { messageSendCreator, messageTextChangeCreator } from "../../Redux/dialogs-reduser";
+import React from "react";
+import { messageSendCreator } from "../../Redux/dialogs-reduser";
 import Dialogs from "./Dialogs";
 import {connect} from 'react-redux'
-    let mapStateToProps = (state) => {
+import Login from "../Login/Login";
+import { doAuthorization } from "../../Redux/findusers-reducer";
+    
+
+class DialogsClass extends React.Component {
+    componentDidMount() { 
+        this.props.doAuthorization()
+        //this.props.getStatus(this.props.id)
+        
+  }
+
+  render() {
+      if (!this.props.isAuth) return <Login/>
+      return <Dialogs {...this.props}  /> 
+  }
+}
+
+
+
+
+
+let mapStateToProps = (state) => {
         return {
             messages: state.dialogsPage.messages,
             dialogss: state.dialogsPage.dialogss,
-            newMessageBody: state.dialogsPage.newMessageBody,
             isAuth: state.auth.isAuth
         }
-    }
+    }   
 
-    let mapDispatchToProps = (dispatch) => {
-        return {
-            messageTextChange: (text) => {
-                dispatch(messageTextChangeCreator(text))
-            } ,
-            messageCreator: () => {
-                dispatch(messageSendCreator())
-            }
-        }
-    }
+    //let mapDispatchToProps = (dispatch) => {
+     //   return {
+       //     messageTextChange: (text) => {
+       //         dispatch(messageTextChangeCreator(text))
+        //    } ,
+        //    messageCreator: () => {
+         //       dispatch(messageSendCreator())
+         //   }
+        //}
+   // }
  const DialogsContainer = connect(mapStateToProps, {
-    messageTextChangeCreator,
+    doAuthorization,
     messageSendCreator,
-})(Dialogs)
+})(DialogsClass)
 export default DialogsContainer
