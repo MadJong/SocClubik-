@@ -1,6 +1,7 @@
-//import { stopSubmit } from "redux-form"
+//@ts-ignore
+import { stopSubmit } from "redux-form"
 import { ThunkAction } from "redux-thunk"
-import { authme, getCaptchaUrl, logOut } from "../Api/api"
+import { authme, getCaptchaUrl, logOut, ResultCodes, ResultCodesCaptcha } from "../Api/api"
 import { doAuthorization } from "./findusers-reducer"
 import { AppStateType } from "./redux-store"
 
@@ -61,20 +62,20 @@ export const setUserData = (userId: number | null, email: string | null, login: 
 type ThunkTypeAuth = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypeAuth>
 export const login = (email:string, password:string, rememberMe:boolean, captcha: any): ThunkTypeAuth => async(dispatch) => {
    let response = await authme(email, password, rememberMe, captcha)
-        if (response.data.resultCode === 0) {
+        if (response.resultCode === ResultCodes.Success) {
             dispatch(doAuthorization())
         } else {
-            if (response.data.resultCode === 10) {
+            if (response.resultCode === ResultCodesCaptcha.CaptchaIsTequaried) {
                 dispatch(getCaptcha())
             }
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
-            //dispatch(stopSubmit("ReactJs", {_error: message}))
+            let message = response.messages.length > 0 ? response.messages[0] : "Some error"
+            dispatch(stopSubmit("ReactJs", {_error: message}))
         }
 }
 
 export const antiLogin = (): ThunkTypeAuth => async(dispatch) => {
    let response = await logOut()
-        if (response.data.resultCode === 0) {
+        if (response.resultCode === ResultCodes.Success) {
             dispatch(setUserData(null,null,null,false))
         }
     
@@ -85,7 +86,7 @@ type setCaptchaUrlType = {
 }
 export const getCaptcha = (): ThunkTypeAuth => async(dispatch) => {
     let response = await getCaptchaUrl()
-    const captcha = response.data.url;
+    const captcha = response.url;
     dispatch(setCaptcha(captcha))
 }
 

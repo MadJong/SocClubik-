@@ -1,14 +1,15 @@
 import React from "react";
 // @ts-ignore
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import {requiredField } from "../../utils/validators/Validators";
 import { InputForm } from "../Common/FormsControls";
+import { LoginFormValuesType } from "./Login";
 type PropsType = {
-    error: any 
-    handleSubmit: any 
+ 
     captchaUrl: null | string
 }
-const LoginForm: React.FC<PropsType> = ({error, captchaUrl, handleSubmit}) => {
+
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType> & PropsType> = ({error, captchaUrl, handleSubmit}) => {
     return (
         <form onSubmit={handleSubmit}>
                 <div><Field validate={[requiredField]} name={"email"} placeholder={"Введите логин..."} component={InputForm}/></div>

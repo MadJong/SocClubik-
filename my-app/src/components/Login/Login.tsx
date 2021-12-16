@@ -8,7 +8,13 @@ import { AppStateType } from "../../Redux/redux-store";
 type PropsType = {
     isAuth: boolean
     captchaUrl: string | null
-    login: (email:string, password:string, rememberMe:boolean, captcha: any) => void
+    login: (email:string, password:string, rememberMe:boolean, captcha: string | null) => void
+}
+export type LoginFormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string | null
 }
 const Login: React.FC<PropsType> = ({login, captchaUrl, isAuth }) => {
     const log = useNavigate()
@@ -31,4 +37,4 @@ const mapStateToProps = (state: AppStateType) => {
     captchaUrl: state.auth.captchaUrl
     }
 }
-export default connect(mapStateToProps, {login, antiLogin})(Login)
+export default connect(mapStateToProps, {login})(Login)

@@ -1,6 +1,6 @@
 import { type } from "os"
 import { ThunkAction } from "redux-thunk"
-import { getUserStatus, setUserPhoto, updateStatus } from "../Api/api"
+import { getUserStatus, ResultCodes, setUserPhoto, updateStatus } from "../Api/api"
 import { PhotosType, PostItem, ProfilType } from "../Types/Types"
 import { AppStateType } from "./redux-store"
 
@@ -115,13 +115,14 @@ type ThunksType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes
 
 export const getStatus = (userId :number): ThunksType => async(dispatch) => {
     let response = await getUserStatus(userId)
-        dispatch(setStatus(response.data))
+    //@ts-ignore
+        dispatch(setStatus(response))
     
 }
 
 export const updateUserStatus = (status: string): ThunksType => async(dispatch) => {
     let response = await updateStatus(status)
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodes.Success) {
             dispatch(setStatus(status))
         } 
     
@@ -129,8 +130,8 @@ export const updateUserStatus = (status: string): ThunksType => async(dispatch) 
 
 export const savePhoto = (file: any): ThunksType => async(dispatch) => {
     let response = await setUserPhoto(file)
-    if(response.data.resultCode === 0) {
-        dispatch(setPhoto(response.data.data.photos))  
+    if(response.resultCode === ResultCodes.Success) {
+        dispatch(setPhoto(response.data.photos))  
     }
 }
 export default ProfileReduser
