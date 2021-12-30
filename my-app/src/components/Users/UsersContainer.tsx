@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux"
-import { follow, setUsers, unfollow, selectPage, setUserTotalCount, setIsFetching, setStateFollowing, getUsersThunkCreator, useUnFollow, useFollow, selectPageType } from "../../Redux/findusers-reducer";
+import { follow, setUsers, unfollow, selectPage, setUserTotalCount, setFilter, setIsFetching, setStateFollowing, getUsersThunkCreator, useUnFollow, useFollow, selectPageType, doAuthorization } from "../../Redux/findusers-reducer";
 import UsersPure from "./UsersPure";
 import Preloader from "../Common/preloader";
-import { getUserReselect} from "../../utils/reselect";
+import { getTotalUsersCountSelect, getUserReselect} from "../../utils/reselect";
 import { UserType } from "../../Types/Types";
 import { AppStateType } from "../../Redux/redux-store";
 import { type } from "os";
@@ -13,10 +13,12 @@ type PureProps = {
 }
 
 type DispatchProps = {
-    useFollow: (id:number) => void
-    useUnFollow: (id:number) => void
-    getUsersThunkCreator: (cp: number, pageSize: number) => void
-    selectPage: (num: number) => selectPageType
+    //useFollow: (id:number) => void
+    //useUnFollow: (id:number) => void
+    // getUsersThunkCreator: (cp: number, pageSize: number, term: string, filter: any) => void
+    //selectPage: (num: number) => selectPageType
+    // setFilter:(filter:any) => void
+    // doAuthorization: () => void
 }
 type StateProps = {
     pageSize: number
@@ -26,36 +28,36 @@ type StateProps = {
     totalUsersCount: number
     isFollowingProgress: Array<number>
     pageTitle: string
+    filter: any
 }
 type PropsType = PureProps & DispatchProps & StateProps
 class UsersClassAPI extends React.Component<PropsType> { 
-    componentDidMount() {
-        this.props.getUsersThunkCreator(1, this.props.pageSize)  
-    }  
+    //componentDidMount() {
+      //  this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize, "", this.props.filter.friend)  
+    //}  
 
-    pageChenged = (pagenum: number) => {
-        this.props.selectPage(pagenum);
-        this.props.getUsersThunkCreator(pagenum, this.props.pageSize)
-       
-    }
+    //pageChenged = (pagenum: number) => {
+    //    this.props.selectPage(pagenum);
+    //    this.props.getUsersThunkCreator(pagenum, this.props.pageSize, this.props.filter.term, this.props.filter.friend)  
+    //} 
+   // onFilterChanged = (filter: any) => {
+     //   this.props.getUsersThunkCreator(1, this.props.pageSize, filter.term, filter.friend)
+       // this.props.selectPage(1);  
+    //}
 render() {
     return (
         <>
-        {this.props.isFetching ? <Preloader/> : null}
+        <h1>{this.props.pageTitle}</h1>
     <UsersPure
-    isFetching={this.props.isFetching}
-    currentPage={this.props.currentPage}
-    users={this.props.users}
-    totalUsersCount={this.props.totalUsersCount}
-    pageSize={this.props.pageSize}
+    // Между h1 и UsersPure {this.props.isFetching ? <Preloader/> : null}
     //unfollow={this.props.unfollow}
     //follow={this.props.follow}
-    pageChenged = {this.pageChenged}
     //setStateFollowing={this.props.setStateFollowing}
-    isFollowingProgress={this.props.isFollowingProgress}
-    uUnFollow = {this.props.useUnFollow}
-    uFollow = {this.props.useFollow}
-    title = {this.props.pageTitle}
+    // pageChanged = {this.pageChanged}
+    // uUnFollow = {this.props.useUnFollow}
+    // uFollow = {this.props.useFollow}
+    // title = {this.props.pageTitle}
+    // onFilterChanged = {this.onFilterChanged}
     />
     </> )
 }
@@ -63,12 +65,13 @@ render() {
 
 let mapStateToProps = (state: AppStateType) => {
     return {
-        isFetching: state.userPage.isFetching,
-        users: getUserReselect(state),
-        pageSize: state.userPage.pageSize,
-        totalUsersCount: state.userPage.totalUsersCount,
-        currentPage: state.userPage.currentPage,
-        isFollowingProgress : state.userPage.isFollowingProgress,
+        // isFetching: state.userPage.isFetching,
+        //users: getUserReselect(state),
+        // pageSize: state.userPage.pageSize,
+        //totalUsersCount: getTotalUsersCountSelect(state),
+        //currentPage: state.userPage.currentPage,
+        //isFollowingProgress : state.userPage.isFollowingProgress,
+       // filter: state.userPage.filter
     }
 }
 
@@ -99,13 +102,15 @@ const UsersContainer = connect(mapStateToProps, {
     //follow,
     //unfollow,
     //setUsers,
-    selectPage,
-    setUserTotalCount,
-    //setIsFetching,
-    //setStateFollowing,
-    getUsersThunkCreator,
-    useUnFollow,
-    useFollow,
+    // selectPage,
+    // setUserTotalCount,
+    // setIsFetching,
+    // setStateFollowing,
+    // getUsersThunkCreator,
+    // useUnFollow,
+    // useFollow,
+    // setFilter,
+    // doAuthorization,
 })(UsersClassAPI)
 
 export default UsersContainer

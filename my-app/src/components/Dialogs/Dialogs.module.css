@@ -31,11 +31,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .textArea {
     width: 90%;
-    height: 50px;
+    height: 30px;
 }
 .send {
     padding: 10px 30px;
@@ -45,7 +46,6 @@
 }
 
 .button {
-    margin-left: 50%;
     margin-top: 15px;
 }
 

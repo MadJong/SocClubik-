@@ -15,7 +15,7 @@ const SELECTPAGE = "SELECTPAGE"
 const SETUSERTOTALCOUNT = "SETUSERTOTALCOUNT"
 const SETISFETCHING = "SETISFETCHING"
 const SETISFOLLOWINGPROGRESS = "SETISFOLLOWINGPROGRESS"
-
+const SETFILTER = "SETFILTERFORUSERS"
 const ober = {
     users: [
     ] as Array<UserType>,
@@ -24,6 +24,10 @@ const ober = {
     currentPage: 1,
     isFetching: false,
     isFollowingProgress: [] as Array<number>,
+    filter: {
+        term: "",
+        friend: null as null | boolean
+    }
 }
  type UserOber = typeof ober
 const UsersReducer = (state = ober, action: ActionsTypes) : UserOber => {
@@ -59,10 +63,12 @@ const UsersReducer = (state = ober, action: ActionsTypes) : UserOber => {
                                 case SETISFOLLOWINGPROGRESS:
                                     return stateCop = {...state, isFollowingProgress: action.state ? [...state.isFollowingProgress, action.id] : state.isFollowingProgress.filter(id => id != action.id)
                                     }
+                                    case SETFILTER:
+                                    return stateCop = {...state, filter: {...state.filter, term: action.term, friend: action.friend}}
             default: return state
         }
 }
-type ActionsTypes = selectPageType |  SetUsers | followType | unfollowType  | setUsersTotalCountType | setIsFetchingType | setStateFollowingType | setUserProfileType | IniType | setStatusType | setUserDataType
+type ActionsTypes = selectPageType |  SetUsers | followType | unfollowType  | setUsersTotalCountType | setIsFetchingType | setStateFollowingType | setUserProfileType | IniType | setStatusType | setUserDataType | setFilterType
 //type ActionsTypes = InferTypesActions
 type setStateFollowingType = {
     type: typeof SETISFOLLOWINGPROGRESS
@@ -170,6 +176,18 @@ export const setUserTotalCount = (totalcount: number): setUsersTotalCountType =>
         totalcount: totalcount,
     }
 }
+type setFilterType = {
+    type: typeof SETFILTER,
+    term: string
+    friend: any
+}
+export const setFilter = (term: string, friend: any): setFilterType => {
+    return {
+        type: SETFILTER,
+        term,
+        friend,
+    }
+}
 type setIsFetchingType = {
     type: typeof SETISFETCHING
     isFetching: boolean
@@ -182,11 +200,12 @@ export const setIsFetching = (isFetching: boolean): setIsFetchingType => {
 }
 type GetStateType = () => AppStateType
 type DispatchType = Dispatch<ActionsTypes>
-export const getUsersThunkCreator = (cp: number ,pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => {
+export const getUsersThunkCreator = (cp: number ,pageSize: number, term: string, friend: any = null) => async (dispatch: DispatchType, getState: GetStateType) => {
     dispatch(setIsFetching(true))
-    let response = await getUsers(cp, pageSize);
+    let response = await getUsers(cp, pageSize, term, friend);
         dispatch(setUsers(response.items))
         dispatch(setUserTotalCount(response.totalCount))
+        dispatch(setFilter(term, friend))
         dispatch(setIsFetching(false))
         //this.props.setUsersTotalCount(response.data.totalCount)
     

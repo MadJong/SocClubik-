@@ -1,14 +1,13 @@
 import React from "react";
-import {connect} from 'react-redux'
+import {connect, useDispatch, useSelector} from 'react-redux'
 
 import LoginRedusxForm from "./LoginForm";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { antiLogin, login } from "../../Redux/auth-reducer";
 import { AppStateType } from "../../Redux/redux-store";
+import { getCaptchaUrlSelect, getIsAuthSelect } from "../../utils/reselect";
 type PropsType = {
-    isAuth: boolean
-    captchaUrl: string | null
-    login: (email:string, password:string, rememberMe:boolean, captcha: string | null) => void
+
 }
 export type LoginFormValuesType = {
     email: string
@@ -16,25 +15,32 @@ export type LoginFormValuesType = {
     rememberMe: boolean
     captcha: string | null
 }
-const Login: React.FC<PropsType> = ({login, captchaUrl, isAuth }) => {
+const Login: React.FC<PropsType> = () => {
     const log = useNavigate()
+    const isAuthSel = useSelector(getIsAuthSelect)
+    const captchaUrlSel = useSelector(getCaptchaUrlSelect)
+    const dispatch = useDispatch()
+    const loginSel = (email:string, password:string, rememberMe:boolean, captcha: any) => {
+       dispatch(login(email, password, rememberMe, captcha))
+    }
     let onSubmit = (formData: any) => {
         console.log(formData.email, formData.password, formData.rememberMe)
-        login(formData.email, formData.password, formData.rememberMe, formData.captcha)
+        loginSel(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
 
-    if (isAuth) {log("/profile/")}
+    if (isAuthSel) {log("/profile/")}
     return (   
             <div><h1>Login</h1>
-            <LoginRedusxForm captchaUrl={captchaUrl} onSubmit={onSubmit}/></div>
+            <LoginRedusxForm captchaUrl={captchaUrlSel} onSubmit={onSubmit}/></div>
             
     )
 }
 
 const mapStateToProps = (state: AppStateType) => {
   return  {
-    isAuth: state.auth.isAuth,
-    captchaUrl: state.auth.captchaUrl
+   // isAuth: state.auth.isAuth,
+    //captchaUrl: state.auth.captchaUrl
     }
 }
-export default connect(mapStateToProps, {login})(Login)
+export default Login
+//export default connect(mapStateToProps, {})(Login)

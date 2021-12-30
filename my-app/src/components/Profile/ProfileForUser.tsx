@@ -9,20 +9,13 @@ import PostsContainer from "../MyPosts/PostsContainer";
 import classes from "./Profile.module.css"
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 type PropsType = {}
-const Profile: React.FC = () => {
+const ProfileForUser: React.FC = () => {
   const myIDSel = useSelector(getMyIDSelect)
   const isAuthSel = useSelector(getIsAuthSelect)
   const profileSel = useSelector(getProfileSelect)
   const statusSel = useSelector(getStatusSelect)
   const userProfileSel = useSelector(getUserProfileSelect)
   const dispatch = useDispatch()
-  useEffect(() => {
-    if(myIDSel !== null) {
-      console.log('sdsdsd')
-      dispatch(getUserPageThunk(myIDSel))
-        dispatch(getStatus(myIDSel))
-    }
-  }, [myIDSel])
   const savePhotoL = (file: any) => {
     dispatch(savePhoto(file))
   }
@@ -32,12 +25,14 @@ const Profile: React.FC = () => {
   if (!isAuthSel && userProfileSel === null) {return <Login/>}
     return (
         <div className={classes.content}>
-          <ProfileInfo savePhoto={savePhotoL} myID={myIDSel}
-           // @ts-ignore
+          <ProfileInfo savePhoto={savePhotoL}
+         
+          myID={myIDSel}
+           //@ts-ignore
            isAuth={isAuthSel}
             profile={profileSel} status={statusSel} updateUserStatus={updateUserStatusL}/>
         <PostsContainer  />
       </div>
     )
 }
-export default Profile
+export default ProfileForUser

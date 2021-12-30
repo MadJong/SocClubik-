@@ -8,26 +8,26 @@ import { ProfilType } from "../../Types/Types";
 import { AppStateType } from "../../Redux/redux-store";
 
 type StateProps = {
-  profile: ProfilType
+ // profile: ProfilType
   isAuth: boolean
-  status: string
-  id: number
-  myID: number
+ // status: string
+  //id: number
+  //myID: number
 }
-type DispatchProps = {
-  setUserProfile: (status: string) => void
-  getStatus: (userId: number) => void
-  updateUserStatus: (status: string) => void
- getUserPageThunk: (id: number) => void
- doAuthorization: () => void
- savePhoto: (f: any) => void
-}
-type PropsType = StateProps & DispatchProps
+//type DispatchProps = {
+//  setUserProfile: (status: string) => void
+ // getStatus: (userId: number) => void
+ // updateUserStatus: (status: string) => void
+// getUserPageThunk: (id: number) => void
+// doAuthorization: () => void
+// savePhoto: (f: any) => void
+//}
+//type PropsType = StateProps & DispatchProps
 
 
-class ProfileContainer extends React.PureComponent<PropsType> {
+class ProfileContainer extends React.PureComponent {
   componentDidMount() { 
-        this.props.doAuthorization()
+        //this.props.doAuthorization()
         //this.props.getStatus(this.props.id)
         
   }
@@ -35,26 +35,26 @@ class ProfileContainer extends React.PureComponent<PropsType> {
     render() {
       if (!this.props.isAuth) { return <Login/>}
         return (
-            <Profile isAuth={this.props.isAuth} myID={this.props.myID} savePhoto={this.props.savePhoto} profile={this.props.profile} status={this.props.status} updateUserStatus={this.props.updateUserStatus} />
+            <Profile/>
         )
     }
 }
 let mapStateToProps = (state: AppStateType) => ({
-  profile: state.profilPage.userProfile, 
+  //profile: state.profilPage.userProfile, 
   isAuth: state.auth.isAuth,
-  status: state.profilPage.status,
-  id: state.auth.userId,
-  myID: state.profilPage.myID,
+  //status: state.profilPage.status,
+  //id: state.auth.userId,
+  //myID: state.profilPage.myID,
 })
 
 
 
 export default connect(mapStateToProps,{
-  setUserProfile,
-  getStatus,
-  updateUserStatus,
- getUserPageThunk,
- doAuthorization,
- savePhoto,
+ // setUserProfile,
+  //getStatus,
+  //updateUserStatus,
+ //getUserPageThunk,
+ //doAuthorization,
+ //savePhoto,
   // @ts-ignore
 })(ProfileContainer) 

@@ -5,8 +5,8 @@ import StatusHook from "../StatusHook";
 import classes from "./ProfileInfo.module.css"
 
 type PropsType = {
-  profile: ProfilType
-  myID: number
+  profile: ProfilType | null
+  myID: number | null
   status: string | ""
   updateUserStatus: (status:string) => void
   savePhoto: any
@@ -21,6 +21,7 @@ const ProfileInfo: React.FC<PropsType> = ({profile, myID, status, updateUserStat
       savePhoto(e.target.files[0])
     }
   }
+
   return (
         <div>
             <div>
@@ -28,7 +29,7 @@ const ProfileInfo: React.FC<PropsType> = ({profile, myID, status, updateUserStat
         </div>
         <div className={classes.ava}>
           <img className={classes.img} src={profile.photos.large || "https://www.kino-teatr.ru/news/8434/85299.jpg" } alt="" />
-          <div>{myID ? <input type={"file"} onChange={changeAva} />: null}</div>
+          <div>{myID === profile.userId ? <input type={"file"} onChange={changeAva} />: null}</div>
           <div>
             
             <div><span className={classes.bold}>{profile.fullName}</span></div>

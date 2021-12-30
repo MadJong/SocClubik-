@@ -4,22 +4,24 @@ import classes from "./Dialogs.module.css"
 import MessageItem from "./MessageItem/MessageItem";
 import AddMessageForm from "./AddMessageForm";
 import Login from "../Login/Login";
-const Dialogs = (props) => {
-    let sendFunc = (dataForm) => {
-        console.log(dataForm.textForArea);
-        props.messageSendCreator(dataForm.textForArea)
-    }
-    if (!props.isAuth) {return <Login/>}
+import { useSelector } from "react-redux";
+import { getDialogsSelect, getIsAuthSelect, getMessagesSelect } from "../../utils/reselect";
+const Dialogs = () => {
+    const isAuthSel = useSelector(getIsAuthSelect)
+    const messagesSel = useSelector(getMessagesSelect)
+    const dialogsSel = useSelector(getDialogsSelect)
+
+    if (!isAuthSel) {return <Login/>}
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItems}>
-            {props.dialogss.map((user, index) => <DialogItem key={index + 1} name={user.name} id={user.id} />)}
+            {dialogsSel.map((user, index) => <DialogItem key={index + 1} name={user.name} id={user.id} />)}
             </div>
             <div>
             <div className={classes.dialogsMessages}>
-            {props.messages.map((m, index) => <MessageItem message={m.message} key={index + 1} />)}
+            {messagesSel.map((m, index) => <MessageItem message={m.message} key={index + 1} />)}
             </div>
-            <AddMessageForm onSubmit={sendFunc} />
+            <AddMessageForm />
             
             </div>
         </div>
@@ -29,3 +31,4 @@ const Dialogs = (props) => {
 
 
 export default Dialogs
+

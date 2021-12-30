@@ -56,8 +56,8 @@ type getUsersType = {
         totalCount: number
         error: string
 }
-export const getUsers = (pagenum:number,count:number) => {
-   return instanceOfAxios.get<getUsersType>(`users?page=${pagenum}&count=${count}`).then(response => response.data)
+export const getUsers = (pagenum:number,count:number, term: string = "", friend: any) => {
+   return instanceOfAxios.get<getUsersType>(`users?page=${pagenum}&count=${count}&term=${term}` + (friend === null ? '' : `&friend=${friend}`)).then(response => response.data)
 }
 export const getAuth = () => {
    return instanceOfAxios.get<MeResponseType>(`auth/me`).then(respoone => respoone.data)

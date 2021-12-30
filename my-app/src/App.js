@@ -13,11 +13,16 @@ import Login from "./components/Login/Login"
 import React, { useEffect } from 'react';
 import { doAuthorization } from './Redux/findusers-reducer';
 import Void from './components/Void/Void';
+import { useDispatch } from 'react-redux';
+import UsersPure from './components/Users/UsersPure';
+import Dialogs from './components/Dialogs/Dialogs';
+import Profile from './components/Profile/Profile';
 
 function App() {
   console.log(store.getState().auth.isAuth)
+  const dispatch = useDispatch()
   useEffect(() => {
-    doAuthorization()
+    dispatch(doAuthorization())
     console.log(11)
   }, [])
   return (
@@ -26,9 +31,9 @@ function App() {
       <Navbar/>
     <div className="app-wrapper-content"> 
     <Routes>
-      <Route path="/messages/*" element={<React.Suspense fallback={<div>Loading</div>}> <DialogsContainer /> </React.Suspense>} />
-      <Route path="/profile/" element={<ProfileContainer />} />
-      <Route path="/findusers" element={<UsersContainer pageTitle={"Айтишники"} />}></Route>
+      <Route path="/messages/*" element={<React.Suspense fallback={<div>Loading</div>}> <Dialogs/> </React.Suspense>} />
+      <Route path="/profile/" element={<Profile />} />
+      <Route path="/findusers" element={<UsersPure pageTitle={"Классные ребята"} />}></Route>
       <Route path="/profile/:userId" element={<UserPage/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/music" element={<Void/>}/>

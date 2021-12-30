@@ -8,7 +8,7 @@ import { doAuthorization } from "../../Redux/findusers-reducer";
 
 class DialogsClass extends React.Component {
     componentDidMount() { 
-        this.props.doAuthorization()
+        //this.props.doAuthorization()
         //this.props.getStatus(this.props.id)
         
   }
