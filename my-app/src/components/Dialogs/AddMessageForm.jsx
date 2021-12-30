@@ -26,7 +26,7 @@ const AddMessage = () => {
          >
            {({ isSubmitting }) => (
              <Form className={classes.createForm}>
-               <Field className={classes.textArea} placeholder={"Enter your message..."}  type="text-area" name="message" />
+               <Field className={classes.textArea} placeholder={"Enter your message..."}  component="textarea" name="message" />
                <div className={classes.button}><button className={classes.send} type="submit" disabled={isSubmitting}>
                Отправить
                </button>
