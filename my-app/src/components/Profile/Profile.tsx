@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../Redux/auth-reducer";
 import { getUserPageThunk } from "../../Redux/findusers-reducer";
 import { getStatus, savePhoto, updateUserStatus } from "../../Redux/pfrofile-reduser";
 import { getIsAuthSelect, getMyIDSelect, getProfileSelect, getStatusSelect, getUserProfileSelect } from "../../utils/reselect";

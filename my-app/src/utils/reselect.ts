@@ -61,3 +61,11 @@ export const getMyIDSelect = (state: AppStateType) => {
 export const getUserProfileSelect = (state: AppStateType) => {
     return state.profilPage.userProfile
 }
+
+export const getEnemyUserProfile = (state: AppStateType) => {
+    return state.profilPage.enUserProfile
+}
+
+export const getEnemyStatusSelect = (state: AppStateType) => {
+    return state.profilPage.enemyStatus
+}

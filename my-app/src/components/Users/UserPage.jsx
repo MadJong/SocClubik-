@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
-import { getUserPageThunk } from "../../Redux/findusers-reducer";
-import { getStatus } from "../../Redux/pfrofile-reduser";
+import { useParams } from "react-router-dom";
+import { getUserEnemyPageThunk} from "../../Redux/findusers-reducer";
+import { getEnStatus, getStatus } from "../../Redux/pfrofile-reduser";
 import Profile from "../Profile/Profile";
 import ProfileForUser from "../Profile/ProfileForUser";
 import ProfileContainerTwo from "./ProfileContainerTwo";
@@ -22,14 +23,17 @@ const UserPagePure = () => {
     useLocation()
     let IDUser = useLocation().state
     let a = +window.location.href.split("/")[4]
+    let {userId} = useParams()
+    console.log(userId + " - из useParams")
     const dispatch = useDispatch()
     useEffect(() => {
         if (IDUser === null) {
-            dispatch(getUserPageThunk(a))
-        dispatch(getStatus(a))
+            dispatch(getUserEnemyPageThunk((+userId)))
+        dispatch(getEnStatus((+userId)))
+        
         } else {
-        dispatch(getUserPageThunk(IDUser))
-        dispatch(getStatus(IDUser))
+        dispatch(getUserEnemyPageThunk(IDUser))
+        dispatch(getEnStatus(IDUser))
         }
     }, [])
     return (

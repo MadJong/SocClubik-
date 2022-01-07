@@ -10,7 +10,8 @@ const SETUSERPROFILE = "SETUSERPROFILE"
 const SETSTATUS = "SETSTATUS"
 const INI = "INI"
 const UPDATEPHOTO = "UPDATEPHOTO"
-
+const SETENPROFILE = "SETENPROFILE"
+const SETENEMYSTATUS = "SETENEMYSTATUS"
 
 let ober = {
     posts: [{nickName: "Да я настоящий", ms: "y/blob/master/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid"},
@@ -21,6 +22,8 @@ let ober = {
     userProfile: null as ProfilType | null,
     status: "",
     myID: null as number | null,
+    enUserProfile: null as ProfilType | null,
+    enemyStatus: "",
   }
 
   type InitialOberProfile = typeof ober
@@ -47,11 +50,40 @@ const ProfileReduser = (state = ober, action: ActionsTypesProfile):InitialOberPr
                        return stateCop= {...state, myID: action.id};
                     case UPDATEPHOTO:
                         return stateCop={...state, userProfile: {...state.userProfile, photos: action.photos} as ProfilType}
+                        case SETENPROFILE:
+                        return stateCop={...state, enUserProfile: action.userPfro };
+                        case SETENEMYSTATUS: 
+                        return stateCop={...state, enemyStatus: action.status}
                 default:
                     return state;
 } }
 
-type ActionsTypesProfile = IniType | SetPhotoType | AddPostType | setUserProfileType | setStatusType 
+
+export type setStatusEnemyType = {
+    type: typeof SETENEMYSTATUS
+    status: string
+}
+
+export const setStatusEnemy = (status: string) : setStatusEnemyType => {
+    return {
+        type: SETENEMYSTATUS,
+        status
+    }
+}
+
+type setEnUserType = {
+    type: typeof SETENPROFILE,
+    userPfro: ProfilType, 
+}
+
+export const setEnemyProfile = (userPfro: ProfilType): setEnUserType => {
+    return {
+        type: SETENPROFILE,
+        userPfro,
+    }
+}
+
+type ActionsTypesProfile = IniType | SetPhotoType | AddPostType | setUserProfileType | setStatusType | setEnUserType | setStatusEnemyType
 
 export type IniType = {
     type: typeof INI
@@ -120,6 +152,11 @@ export const getStatus = (userId :number): ThunksType => async(dispatch) => {
     
 }
 
+export const getEnStatus = (userId:number):ThunksType => async(dispatch) => {
+    let response = await getUserStatus(userId)
+    //@ts-ignore
+    dispatch(setStatusEnemy(response))
+}
 export const updateUserStatus = (status: string): ThunksType => async(dispatch) => {
     let response = await updateStatus(status)
         if (response.data.resultCode === ResultCodes.Success) {

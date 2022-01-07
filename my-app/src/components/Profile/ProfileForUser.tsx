@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../Redux/auth-reducer";
 import { getUserPageThunk } from "../../Redux/findusers-reducer";
 import { getStatus, savePhoto, updateUserStatus } from "../../Redux/pfrofile-reduser";
-import { getIsAuthSelect, getMyIDSelect, getProfileSelect, getStatusSelect, getUserProfileSelect } from "../../utils/reselect";
+import { getEnemyStatusSelect, getEnemyUserProfile, getIsAuthSelect, getMyIDSelect, getProfileSelect, getStatusSelect, getUserProfileSelect } from "../../utils/reselect";
 import Login from "../Login/Login";
 import PostsContainer from "../MyPosts/PostsContainer";
 import classes from "./Profile.module.css"
@@ -12,8 +12,8 @@ type PropsType = {}
 const ProfileForUser: React.FC = () => {
   const myIDSel = useSelector(getMyIDSelect)
   const isAuthSel = useSelector(getIsAuthSelect)
-  const profileSel = useSelector(getProfileSelect)
-  const statusSel = useSelector(getStatusSelect)
+  const profileSel = useSelector(getEnemyUserProfile)
+  const statusSel = useSelector(getEnemyStatusSelect)
   const userProfileSel = useSelector(getUserProfileSelect)
   const dispatch = useDispatch()
   const savePhotoL = (file: any) => {

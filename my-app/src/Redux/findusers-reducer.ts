@@ -6,7 +6,7 @@ import { doFollow, doUnfollow, getAuth, getUserPage, getUsers, getUserStatus, Re
 import { UserType } from "../Types/Types"
 import { setUserData, setUserDataType } from "./auth-reducer"
 
-import { getStatus, inicial,  IniType,  setStatus, setStatusType, setUserProfile, setUserProfileType } from "./pfrofile-reduser"
+import { getStatus, inicial,  IniType,  setEnemyProfile,  setStatus, setStatusType, setUserProfile, setUserProfileType } from "./pfrofile-reduser"
 import { AppStateType, InferActionsTypesRedux } from "./redux-store"
 const SETUSERS = "SETUSERS"
 const FOLLOW = "FOLLOW"
@@ -234,9 +234,13 @@ export const useFollow =  (id: number): ThunkType => async(dispatch) => {
 export const getUserPageThunk = (id: number): ThunkType => async(dispatch) => {
    let response = await getUserPage(id)
         dispatch(setUserProfile(response))
-    
 }
 
+export const getUserEnemyPageThunk = (id:number): ThunkType => async(dispatch) => {
+    let response = await getUserPage(id)
+        //@ts-ignore
+    dispatch(setEnemyProfile(response))
+}
 export const doAuthorization = (): ThunkType => async(dispatch) => {
    let response = await getAuth()
         if (response.resultCode === ResultCodes.Success) {

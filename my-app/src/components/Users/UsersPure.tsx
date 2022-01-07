@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from 'react-router-dom';
+import {useNavigate, useSearchParams } from 'react-router-dom';
 import { getUsersThunkCreator, selectPage, useFollow, useUnFollow } from "../../Redux/findusers-reducer";
 import { getCurrentPageSelect, getFilterSelect, getIsFetchingSelect, getIsFollowingProgressSelect, getPageSizeSelect, getTotalUsersCountSelect, getUserReselect } from "../../utils/reselect";
 import Preloader from "../Common/preloader";
@@ -11,8 +11,20 @@ type PropsType = {
     pageTitle: string
 }
 const UsersPure: React.FC<PropsType> = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams()
     useEffect(() => {
-        dispatch(getUsersThunkCreator(currentPageSel, pageSizeSel, "", filterSel.friend))
+        let searchPage = searchParams.get('page')
+    let searchTerm = searchParams.get('term')
+    let searchFriend = searchParams.get('friend')
+    let actualPage = currentPageSel
+    let actualTerm = filterSel.term
+    let actualFriend: any = filterSel.friend
+        if (searchPage) actualPage = +searchPage 
+        if (searchTerm) actualTerm = searchTerm
+        if (searchFriend) actualFriend = searchFriend
+        dispatch(selectPage(actualPage))
+        dispatch(getUsersThunkCreator(actualPage, pageSizeSel, actualTerm, actualFriend)) 
+        //dispatch(getUsersThunkCreator(currentPageSel, pageSizeSel, "", filterSel.friend)) 
     }, [])
     const route = useNavigate()
     const dispatch = useDispatch()
@@ -23,6 +35,12 @@ const UsersPure: React.FC<PropsType> = (props) => {
     const isFollowingProgressSel = useSelector(getIsFollowingProgressSelect)
     const filterSel = useSelector(getFilterSelect)
     const isFetchingSel = useSelector(getIsFetchingSelect)
+    useEffect(() => {
+        //@ts-ignore
+        setSearchParams({term: filterSel.term, friend: filterSel.friend, page: currentPageSel})
+    }
+    ,[filterSel, currentPageSel])
+    
     const  pageChengedSel = (pagenum: number) => {
         dispatch(selectPage(pagenum));
         dispatch(getUsersThunkCreator(pagenum, pageSizeSel, filterSel.term, filterSel.friend))  
